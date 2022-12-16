@@ -13,7 +13,6 @@ public class OrderRecord {
     private String orderStatus;
     private String customerName;
     private String customerAddress;
-    private Double orderSalePrice;
     @DynamoDBHashKey(attributeName = "productId")
     public String getProductId() {
         return productId;
@@ -34,10 +33,6 @@ public class OrderRecord {
     public String getCustomerAddress() {
         return customerAddress;
     }
-    @DynamoDBAttribute(attributeName = "orderSalePrice")
-    public Double getOrderSalePrice() {
-        return orderSalePrice;
-    }
     public void setProductId(String productId) {
         this.productId = productId;
     }
@@ -57,10 +52,7 @@ public class OrderRecord {
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
-
-    public void setOrderSalePrice(Double orderSalePrice) {
-        this.orderSalePrice = orderSalePrice;
-    }
+    
 
     @Override
     public boolean equals(Object o) {
