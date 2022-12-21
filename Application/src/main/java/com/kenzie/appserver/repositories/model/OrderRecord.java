@@ -28,7 +28,7 @@ public class OrderRecord {
     public String getCustomerName() {
         return customerName;
     }
-    @DynamoDBAttribute(attributeName = "customerAddress")
+    @DynamoDBAttribute(attributeName = "address")
     public String getCustomerAddress() {
         return customerAddress;
     }
