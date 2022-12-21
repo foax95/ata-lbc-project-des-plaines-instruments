@@ -52,7 +52,7 @@ public class OrderRecord {
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
-    
+
 
     @Override
     public boolean equals(Object o) {
