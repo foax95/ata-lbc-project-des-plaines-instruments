@@ -2,23 +2,29 @@ package com.kenzie.appserver.repositories.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.google.common.base.Objects;
 
 @DynamoDBTable(tableName = "Orders")
 public class OrderRecord {
+    private String id;
     private String productId;
     private String orderDate;
     private String status;
     private String customerName;
     private String customerAddress;
-    @DynamoDBHashKey(attributeName = "productId")
-    public String getProductId() {
-        return productId;
+    @DynamoDBHashKey(attributeName = "id")
+    public String getId() {
+        return id;
     }
-    @DynamoDBAttribute(attributeName = "orderDate")
+    @DynamoDBRangeKey(attributeName = "orderDate")
     public String getOrderDate() {
         return orderDate;
+    }
+    @DynamoDBAttribute(attributeName = "productId")
+    public String getProductId() {
+        return productId;
     }
     @DynamoDBAttribute(attributeName = "status")
     public String getStatus() {
@@ -32,6 +38,8 @@ public class OrderRecord {
     public String getCustomerAddress() {
         return customerAddress;
     }
+
+    public void setId(String id) {this.id = id;}
     public void setProductId(String productId) {
         this.productId = productId;
     }
@@ -58,11 +66,11 @@ public class OrderRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderRecord that = (OrderRecord) o;
-        return Objects.equal(productId, that.productId);
+        return Objects.equal(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(productId);
+        return Objects.hashCode(id);
     }
 }
