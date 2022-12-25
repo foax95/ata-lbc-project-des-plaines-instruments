@@ -7,6 +7,9 @@ import com.kenzie.appserver.service.model.Order;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class OrderService {
     private OrderRepository orderRepository;
@@ -16,6 +19,10 @@ public class OrderService {
     }
 
     public Order getOrderById(String id) {
+        if(id == null) {
+            throw new NullPointerException("id cannot be null");
+        }
+
         OrderRecord orderRecord = orderRepository.findById(id).get();
         return new Order(orderRecord.getId(), orderRecord.getProductId(), orderRecord.getOrderDate(), orderRecord.getStatus(), orderRecord.getCustomerName(), orderRecord.getCustomerAddress());
     }
@@ -44,19 +51,22 @@ public class OrderService {
         return order;
     }
 
-    public Order getAllOrders() throws OrderNotFoundException {
+    public List<Order> getAllOrders() throws OrderNotFoundException {
         Iterable<OrderRecord> orderRecords = orderRepository.findAll();
 
-        if(orderRecords.iterator().hasNext()) {
-            OrderRecord orderRecord = orderRecords.iterator().next();
-            return new Order(orderRecord.getId(), orderRecord.getProductId(), orderRecord.getOrderDate(), orderRecord.getStatus(), orderRecord.getCustomerName(), orderRecord.getCustomerAddress());
-        }else {
+        List<Order> orders = new ArrayList<>();
+        for(OrderRecord orderRecord : orderRecords) {
+            orders.add(new Order(orderRecord.getId(), orderRecord.getProductId(), orderRecord.getOrderDate(), orderRecord.getStatus(), orderRecord.getCustomerName(), orderRecord.getCustomerAddress()));
+        }
+
+        if(orders.isEmpty()) {
             throw new OrderNotFoundException();
         }
+        return orders;
 
     }
 
-    public void deleteOrder(String id) {
+    public void deleteOrderById(String id) {
         orderRepository.deleteById(id);
     }
 }
