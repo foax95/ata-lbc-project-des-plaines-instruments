@@ -19,7 +19,7 @@ Resources:
       KeySchema:
         - AttributeName: "id"
           KeyType: "HASH"
-        - AttributeName: "productId"
+        - AttributeName: "orderDate"
           KeyType: "RANGE"
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: false
