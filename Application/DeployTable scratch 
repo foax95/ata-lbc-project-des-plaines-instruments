@@ -1,5 +1,0 @@
-aws cloudformation create-stack --stack-name application --template-body file://Application/instruments_table.yaml --capabilities CAPABILITY_IAM
-
-aws cloudformation wait stack-create-complete --stack-name application
-
-aws dynamodb batch-write-item --request-items file://
