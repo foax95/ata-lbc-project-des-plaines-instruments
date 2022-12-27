@@ -2,25 +2,20 @@ package com.kenzie.appserver.service.model;
 
 public class Order {
 
-    private String id;
+    private final String id;
+    private final String productId;
+    private final String orderDate;
+    private final String status;
+    private final String customerName;
+    private final String customerAddress;
 
-    private String productId;
-
-    private String orderDate;
-
-    private String status;
-
-    private String customerName;
-
-    private String address;
-
-    public Order(String id, String productId, String orderDate, String status, String customerName, String address) {
+    public Order(String id, String productId, String orderDate, String status, String customerName, String customerAddress) {
         this.id = id;
         this.productId = productId;
         this.orderDate = orderDate;
         this.status = status;
         this.customerName = customerName;
-        this.address = address;
+        this.customerAddress = customerAddress;
     }
 
     public String getId() {
@@ -43,7 +38,7 @@ public class Order {
         return customerName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCustomerAddress() {
+        return customerAddress;
     }
 }
