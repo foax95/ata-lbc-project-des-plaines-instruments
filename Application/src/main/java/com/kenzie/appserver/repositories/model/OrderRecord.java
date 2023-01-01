@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.google.common.base.Objects;
+import org.springframework.data.annotation.Id;
 
 @DynamoDBTable(tableName = "Orders")
 public class OrderRecord {
