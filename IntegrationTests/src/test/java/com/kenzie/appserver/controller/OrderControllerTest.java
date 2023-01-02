@@ -67,7 +67,7 @@ public class OrderControllerTest {
                         .exists())
                 .andExpect(jsonPath("customerName")
                         .exists())
-                .andExpect(jsonPath("customerAddress")
+                .andExpect(jsonPath("address")
                         .exists())
                 .andExpect(status().isCreated());
         orderService.deleteOrderById(id);
@@ -95,7 +95,7 @@ public class OrderControllerTest {
                         .exists())
                 .andExpect(jsonPath("customerName")
                         .exists())
-                .andExpect(jsonPath("customerAddress")
+                .andExpect(jsonPath("address")
                         .exists())
                 .andExpect(status().isOk());
     }

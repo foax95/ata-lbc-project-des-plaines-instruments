@@ -19,7 +19,7 @@ public class OrderRecord {
     public String getId() {
         return id;
     }
-    @DynamoDBRangeKey(attributeName = "orderDate")
+    @DynamoDBAttribute(attributeName = "orderDate")
     public String getOrderDate() {
         return orderDate;
     }
