@@ -2,7 +2,6 @@ package com.kenzie.appserver.repositories.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.google.common.base.Objects;
 
@@ -18,7 +17,7 @@ public class OrderRecord {
     public String getId() {
         return id;
     }
-    @DynamoDBRangeKey(attributeName = "orderDate")
+    @DynamoDBAttribute(attributeName = "orderDate")
     public String getOrderDate() {
         return orderDate;
     }
