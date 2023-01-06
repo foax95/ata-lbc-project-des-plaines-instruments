@@ -19,8 +19,6 @@ Resources:
       KeySchema:
         - AttributeName: "id"
           KeyType: "HASH"
-        - AttributeName: "orderDate"
-          KeyType: "RANGE"
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: false
       BillingMode: "PAY_PER_REQUEST"
@@ -42,8 +40,6 @@ Resources:
       KeySchema:
         - AttributeName: "id"
           KeyType: "HASH"
-        - AttributeName: "type"
-          KeyType: "RANGE"
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: false
       BillingMode: "PAY_PER_REQUEST"
