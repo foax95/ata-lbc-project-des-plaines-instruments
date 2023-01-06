@@ -6,21 +6,8 @@ import javax.validation.constraints.NotEmpty;
 
 public class OrderCreateRequest {
     @NotEmpty
-    @JsonProperty("id")
-    private String id;
-
-    @NotEmpty
     @JsonProperty("product_id")
     private String productId;
-
-    @NotEmpty
-    @JsonProperty("order_date")
-    private String orderDate;
-
-    @NotEmpty
-    @JsonProperty("status")
-    private String status;
-
     @NotEmpty
     @JsonProperty("customer_name")
     private String customerName;
@@ -29,36 +16,12 @@ public class OrderCreateRequest {
     @JsonProperty("address")
     private String address;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getProductId() {
         return productId;
     }
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getCustomerName() {

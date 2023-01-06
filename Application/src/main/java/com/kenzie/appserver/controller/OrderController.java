@@ -4,11 +4,15 @@ import com.kenzie.appserver.controller.model.OrderCreateRequest;
 import com.kenzie.appserver.controller.model.OrderResponse;
 import com.kenzie.appserver.service.OrderService;
 import com.kenzie.appserver.service.model.Order;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -34,7 +38,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getOrderById(@PathVariable("orderId") String orderId){
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable("id") String orderId){
         Order order = orderService.getOrderById(orderId);
         if (order == null) {
             return ResponseEntity.notFound().build();
@@ -47,8 +51,8 @@ public class OrderController {
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderCreateRequest orderCreateRequest){
         Order order = new Order(UUID.randomUUID().toString(),
                 orderCreateRequest.getProductId(),
-                orderCreateRequest.getOrderDate(),
-                orderCreateRequest.getStatus(),
+                LocalDateTime.now().toString(),
+                "ORDER PLACED",
                 orderCreateRequest.getCustomerName(),
                 orderCreateRequest.getAddress());
 
@@ -59,8 +63,8 @@ public class OrderController {
         return ResponseEntity.created(URI.create("/orders/"+orderResponse.getId())).body(orderResponse);
     }
 
-    @DeleteMapping
-    public ResponseEntity<OrderResponse> deleteOrder(@PathVariable("orderId") String orderId){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<OrderResponse> deleteOrder(@PathVariable("id") String orderId){
         orderService.deleteOrderById(orderId);
         return ResponseEntity.noContent().build();
     }
@@ -75,4 +79,8 @@ public class OrderController {
         orderResponse.setAddress(order.getCustomerAddress());
         return orderResponse;
     }
+
+    @ResponseStatus(value=HttpStatus.NOT_FOUND)
+    @ExceptionHandler({EmptyResultDataAccessException.class, NoSuchElementException.class})
+    public void notFound(){}
 }

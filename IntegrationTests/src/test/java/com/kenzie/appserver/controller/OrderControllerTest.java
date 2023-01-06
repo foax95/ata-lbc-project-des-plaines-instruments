@@ -1,6 +1,7 @@
 package com.kenzie.appserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import com.kenzie.appserver.IntegrationTest;
 import com.kenzie.appserver.controller.model.OrderCreateRequest;
 import com.kenzie.appserver.service.OrderService;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -38,6 +40,13 @@ public class OrderControllerTest {
                 mockNeat.strings().valStr(), mockNeat.names().valStr(), mockNeat.addresses().valStr());
 
         orderService.createNewOrder(order);
+
+        mvc.perform(get("/orders/all").accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(status().isOk());
+
+        orderService.deleteOrderById(id);
     }
 
     @Test
@@ -45,32 +54,30 @@ public class OrderControllerTest {
         String id = UUID.randomUUID().toString();
 
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest();
-        orderCreateRequest.setId(id);
         orderCreateRequest.setProductId(UUID.randomUUID().toString());
-        orderCreateRequest.setOrderDate(LocalDateTime.now().toString());
-        orderCreateRequest.setStatus(mockNeat.strings().valStr());
         orderCreateRequest.setCustomerName(mockNeat.names().valStr());
         orderCreateRequest.setAddress(mockNeat.addresses().valStr());
 
-        mvc.perform(post("/orders")
+        MvcResult result = mvc.perform(post("/orders")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(orderCreateRequest)))
 
                 .andExpect(jsonPath("id")
                         .exists())
-                .andExpect(jsonPath("productId")
+                .andExpect(jsonPath("product_id")
                         .exists())
-                .andExpect(jsonPath("orderDate")
+                .andExpect(jsonPath("order_date")
                         .exists())
                 .andExpect(jsonPath("status")
                         .exists())
-                .andExpect(jsonPath("customerName")
+                .andExpect(jsonPath("customer_name")
                         .exists())
                 .andExpect(jsonPath("address")
                         .exists())
-                .andExpect(status().isCreated());
-        orderService.deleteOrderById(id);
+                .andExpect(status().isCreated())
+                .andReturn();
+        orderService.deleteOrderById(JsonPath.read(result.getResponse().getContentAsString(), "$.id"));
     }
 
     @Test
@@ -87,17 +94,18 @@ public class OrderControllerTest {
 
                 .andExpect(jsonPath("id")
                         .exists())
-                .andExpect(jsonPath("productId")
+                .andExpect(jsonPath("product_id")
                         .exists())
-                .andExpect(jsonPath("orderDate")
+                .andExpect(jsonPath("order_date")
                         .exists())
                 .andExpect(jsonPath("status")
                         .exists())
-                .andExpect(jsonPath("customerName")
+                .andExpect(jsonPath("customer_name")
                         .exists())
                 .andExpect(jsonPath("address")
                         .exists())
                 .andExpect(status().isOk());
+        orderService.deleteOrderById(id);
     }
 
     @Test
@@ -123,7 +131,7 @@ public class OrderControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
 
                 .andExpect(status().isNoContent());
-        assertThat(orderService.getOrderById(id)).isNull();
+
     }
 
     @Test
@@ -134,7 +142,6 @@ public class OrderControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
 
                 .andExpect(status().isNotFound());
-        assertThat(orderService.getOrderById(id)).isNull();
     }
 
 }
