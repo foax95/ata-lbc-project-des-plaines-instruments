@@ -1,8 +1,11 @@
 :root {
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
-    --primary-color: #131921;
-    --secondary-color: #fff;
+    --primary-color: #011F26;
+    --secondary-color: #e5e1d3;
     --error-color: rgba(194, 0, 0, 0.71);
+    --main:#025E73;
+    --buttons:#F2A71B;
+    --other:#A5A692;
 }
 
 .background {
@@ -10,29 +13,49 @@
     margin: 0;
     counter-reset: section;
 }
-
+body{
+    font-family:sans-serif;
+}
 .header {
     /* Flexbox: https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
-    display: flex;
-    justify-content: space-between;
+    display: block;
+    justify-content: space-evenly;
     align-items: center;
     background-color: var(--primary-color);
     color: var(--secondary-color);
     padding: 0 20px;
 }
-
+.site-title{
+    text-align: center;
+    padding-top:2rem;
+}
 .header_home {
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 4rem;
+    line-height: 4rem;
     height: 100px;
     text-decoration: none;
     color: var(--secondary-color);
 }
-
-.header_nav_link {
+.header nav{
+    display:flex;
+    justify-content:end;
+    padding:0 2rem;
+}
+.header nav ul li {
+    list-style-type:none;
+}
+.header nav ul li a{
     margin-left: 20px;
     vertical-align: top;
     line-height: 40px;
+    color:var(--secondary-color);
+    font-size:1.8rem;
+}
+
+.dashboard-options{
+    padding:2rem 0;
+    background-color:var(--other);
+    display:flex;
 }
 
 .about {
@@ -40,19 +63,41 @@
 }
 
 .button, button {
-    background: #aed9ff;
-    padding: 3px;
+    background: var(--buttons);
+    padding: .2rem .5rem;
     border-radius: 3px;
     text-decoration: none;
-    color: black;
+    color: var(--primary-color);
     border: 1px solid black;
     cursor: pointer;
+    font-size:1.2rem;
 }
 
 .button:hover, button:hover {
     background: #9cc3e4;
 }
-
+main{
+    background-color:#376474;
+    min-height:100vh;
+}
+.dashboard-buttons{
+    margin:0 auto;
+    display:flex;
+    flex-flow:row wrap;
+    gap:1rem;
+}
+.dashboard-buttons button{
+    font-size:1.8rem;
+}
+.admin-content{
+    padding:2rem 0;
+}
+#admin-title{
+    text-align: center;
+    color:#e5e1d3;
+    font-size:2.5rem;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 .card {
     color: var(--primary-color);
     background-color: var(--secondary-color);
@@ -86,4 +131,17 @@
 
 .state.active {
     display: block;
+}
+
+#result{
+    background-color: var(--secondary-color);
+}
+
+.results{
+    background-color: var(--secondary-color);
+    color:var(--primary-color);
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:1rem;
+    padding:1rem .5rem;
 }

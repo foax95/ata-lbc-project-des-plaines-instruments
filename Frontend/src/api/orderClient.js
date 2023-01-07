@@ -9,11 +9,11 @@ import axios from 'axios'
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins
  * https://javascript.info/mixins
  */
-export default class ExampleClient extends BaseClass {
+export default class OrderClient extends BaseClass {
 
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getExample', 'createExample'];
+        const methodsToBind = ['clientLoaded', 'getOrder', 'createOrder', 'getAllOrders'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -36,23 +36,32 @@ export default class ExampleClient extends BaseClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The concert
      */
-    async getExample(id, errorCallback) {
+    async getOrder(id, errorCallback) {
         try {
-            const response = await this.client.get(`/example/${id}`);
+            const response = await this.client.get(`/orders/${id}`);
             return response.data;
         } catch (error) {
-            this.handleError("getConcert", error, errorCallback)
+            this.handleError("getOrderById", error, errorCallback)
         }
     }
 
-    async createExample(name, errorCallback) {
+    async getAllOrders(errorCallback) {
+            try {
+                const response = await this.client.get(`/orders/all`);
+                return response.data;
+            } catch (error) {
+                this.handleError("getOrders", error, errorCallback)
+            }
+        }
+
+    async createOrder(product_id, errorCallback) {
         try {
             const response = await this.client.post(`example`, {
-                name: name
+                product_id: product_id
             });
             return response.data;
         } catch (error) {
-            this.handleError("createExample", error, errorCallback);
+            this.handleError("createOrder", error, errorCallback);
         }
     }
 
