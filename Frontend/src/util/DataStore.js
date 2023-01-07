@@ -49,7 +49,7 @@ export default class DataStore extends BaseClass {
      */
     set(attribute, value) {
         this.state[attribute] = value;
-        this.listeners.forEach(listener => listener());
+        this.listeners.forEach(listener => document.dispatchEvent(new Event(listener)));
     }
 
     /**

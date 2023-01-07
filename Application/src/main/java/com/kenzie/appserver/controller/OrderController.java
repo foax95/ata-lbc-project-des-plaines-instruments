@@ -2,6 +2,7 @@ package com.kenzie.appserver.controller;
 
 import com.kenzie.appserver.controller.model.OrderCreateRequest;
 import com.kenzie.appserver.controller.model.OrderResponse;
+import com.kenzie.appserver.service.OrderNotFoundException;
 import com.kenzie.appserver.service.OrderService;
 import com.kenzie.appserver.service.model.Order;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -81,6 +82,6 @@ public class OrderController {
     }
 
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
-    @ExceptionHandler({EmptyResultDataAccessException.class, NoSuchElementException.class})
+    @ExceptionHandler({EmptyResultDataAccessException.class, NoSuchElementException.class, OrderNotFoundException.class})
     public void notFound(){}
 }
