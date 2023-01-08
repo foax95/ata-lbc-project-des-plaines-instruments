@@ -1,6 +1,7 @@
 import BaseClass from "../util/baseClass";
 import DataStore from "../util/DataStore";
-import ExampleClient from "../api/orderClient";
+import Section from "../util/section";
+import OrderClient from "../api/orderClient";
 
 /**
  * Logic needed for the view playlist page of the website.
@@ -9,7 +10,7 @@ class AdminPage extends BaseClass {
 
     constructor() {
         super();
-        this.bindClassMethods(['onGetOne', 'onGetAll', 'onCreate', 'renderOrders', 'renderSingleOrder'], this);
+        this.bindClassMethods(['onGetOne', 'onGetAll', 'onCreate', 'onDelete', 'renderOrders', 'renderSingleOrder'], this);
         this.dataStore = new DataStore();
         //are states needed
     }
@@ -21,6 +22,7 @@ class AdminPage extends BaseClass {
         document.getElementById('get-by-id-form').addEventListener('submit', this.onGetOne);
         document.getElementById('get-all-form').addEventListener('submit', this.onGetAll);
         document.getElementById('create-form').addEventListener('submit', this.onCreate);
+        document.getElementById('delete-by-id-form').addEventListener('submit', this.onDelete);
         //do we need to create state?
         //this.datastore.addChangeListener(this.onStateChange);
         this.client = new OrderClient();
@@ -40,11 +42,11 @@ class AdminPage extends BaseClass {
                 resultArea.innerHTML = `
                     <div class="results">
                       <h4>${order.id}</h4>
-                      <p>Date: ${order.orderDate}</p>
+                      <p>Date: ${order.order_date}</p>
                       <p>Status: ${order.status}</p>
-                      <p>ProductId: $(order.productId)</p>
-                      <p>ProductId: $(order.customerName)</p>
-                      <p>ProductId: $(order.customerAddress)</p>
+                      <p>ProductId: ${order.product_id}</p>
+                      <p>Customer Name: ${order.customer_name}</p>
+                      <p>Customer Address: ${order.address}</p>
                     </div>
                 `
             } else {
@@ -57,15 +59,16 @@ class AdminPage extends BaseClass {
 
         const orders = this.dataStore.get("orders");
         if(orders){
+           resultArea.innerHTML = "";
            for(const order of orders){
-           resultArea += `
+           resultArea.innerHTML += `
               <div class="results">
                   <h4>${order.id}</h4>
-                  <p>Date: ${order.orderDate}</p>
+                  <p>Date: ${order.order_date}</p>
                   <p>Status: ${order.status}</p>
-                  <p>ProductId: $(order.productId)</p>
-                  <p>ProductId: $(order.customerName)</p>
-                  <p>ProductId: $(order.customerAddress)</p>
+                  <p>ProductId: ${order.product_id}</p>
+                  <p>Customer Name: ${order.customer_name}</p>
+                  <p>Address: ${order.address}</p>
               </div>
               `
            }
@@ -91,6 +94,7 @@ class AdminPage extends BaseClass {
         } else {
             this.errorHandler("Error doing GET!  Try again...");
         }
+        this.renderSingleOrder();
     }
 
     async onGetAll(event) {
@@ -106,6 +110,7 @@ class AdminPage extends BaseClass {
             } else {
                 this.errorHandler("Error doing GET!  Try again...");
             }
+            this.renderOrders();
         }
 
     async onCreate(event) {
@@ -114,14 +119,33 @@ class AdminPage extends BaseClass {
         this.dataStore.set("order", null);
 
         let product_id = document.getElementById("create-product-field").value;
+        let name = document.getElementById("create-name-field").value;
+        let address = document.getElementById("create-address-field").value;
 
-        const createdOrder = await this.client.createExample(product_id, this.errorHandler);
+        const createdOrder = await this.client.createOrder(product_id, name, address, this.errorHandler);
         this.dataStore.set("order", createdOrder);
 
-        if (createdExample) {
-            this.showMessage(`Created ${createdExample.product_id}!`)
+        if (createdOrder) {
+            this.showMessage(`Created ${createdOrder.product_id}!`)
         } else {
             this.errorHandler("Error creating!  Try again...");
+        }
+    }
+
+    async onDelete(event) {
+        // Prevent the page from refreshing on form submit
+        event.preventDefault();
+
+        let id = document.getElementById("del-id-field").value;
+        this.dataStore.set("order", null);
+
+        let result = await this.client.deleteOrder(id, this.errorHandler);
+        this.dataStore.set("order", result);
+        if (result) {
+            this.showMessage(`Deleted ${result}!`);
+            document.getElementById("result-info").innerHTML = id + " Deleted!";
+        } else {
+            this.errorHandler("Error doing DELETE!  Try again...");
         }
     }
 }
