@@ -13,7 +13,7 @@ export default class OrderClient extends BaseClass {
 
     constructor(props = {}){
         super();
-        const methodsToBind = ['clientLoaded', 'getOrder', 'createOrder', 'getAllOrders'];
+        const methodsToBind = ['clientLoaded', 'getOrder', 'createOrder', 'getAllOrders', 'deleteOrder'];
         this.bindClassMethods(methodsToBind, this);
         this.props = props;
         this.clientLoaded(axios);
@@ -54,14 +54,25 @@ export default class OrderClient extends BaseClass {
             }
         }
 
-    async createOrder(product_id, errorCallback) {
+    async createOrder(product_id, name, address, errorCallback) {
         try {
-            const response = await this.client.post(`example`, {
-                product_id: product_id
+            const response = await this.client.post(`orders`, {
+                product_id: product_id,
+                customer_name: name,
+                address: address
             });
             return response.data;
         } catch (error) {
             this.handleError("createOrder", error, errorCallback);
+        }
+    }
+
+    async deleteOrder(id, errorCallback) {
+        try {
+            const response = await this.client.delete(`/orders/${id}`);
+            return response.status;
+        } catch (error) {
+            this.handleError("deleteOrder", error, errorCallback);
         }
     }
 
