@@ -8,7 +8,8 @@ module.exports = {
     usedExports: true
   },
   entry: {
-    examplePage: path.resolve(__dirname, 'src', 'pages', 'examplePage.js'),
+    adminPage: path.resolve(__dirname, 'src', 'pages', 'adminPage.js'),
+    section: path.resolve(__dirname, 'src', 'util', 'section.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -27,9 +28,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'index.html',
-      inject: false
+        template: './src/index.html',
+        filename: 'index.html',
+        inject: false
+    }),
+    new HtmlWebpackPlugin({
+         template: './src/admin.html',
+         filename: 'admin.html',
+         inject: false
     }),
     new CopyPlugin({
       patterns: [
